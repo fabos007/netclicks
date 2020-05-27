@@ -2,7 +2,9 @@ const leftMenu = document.querySelector('.left-menu'),
     hamburger = document.querySelector('.hamburger'),
     tvCard = document.querySelectorAll('.tv-card__img'),
     tvShowList = document.querySelector('.tv-shows__list'),
-    modal = document.querySelector('.modal');
+    modal = document.querySelector('.modal'),
+    IMG_URL = 'https://image.tmdb.org/t/p/w185_and_h278_bestv2',
+    API_KEY = '027cc624070ea1a85168f21cfb32a5a4'
 
 const DBService = class {
     getData = async (url) => {
@@ -22,16 +24,27 @@ const renderCard = response => {
     tvShowList.textContent = '';
 
     response.results.forEach(item => {
+        const { 
+            backdrop_path : backdrop,
+            name : title, 
+            poster_path : poster,
+            vote_average : vote
+        } = item;
+
+        const posterIMG = poster ? IMG_URL + poster : 'img/no-poster.jpg';
+        const backdropIMG = '';
+        const voteElem = '';
+
         const card = document.createElement('li');
         card.classList.add('tv-shows__item');
         card.innerHTML = `
         <a href="#" class="tv-card">
-            <span class="tv-card__vote">7.4</span>
+            <span class="tv-card__vote">${vote}</span>
             <img class="tv-card__img"
-                src="https://image.tmdb.org/t/p/w185_and_h278_bestv2/fhV9ckyBko1ZejEEmwdiXG8YMy5.jpg"
-                data-backdrop="https://image.tmdb.org/t/p/w185_and_h278_bestv2/AdJgkXb8oLI8e4rsk8XzkvABIuw.jpg"
-                alt="Звёздные войны: Повстанцы">
-            <h4 class="tv-card__head">Звёздные войны: Повстанцы</h4>
+                src="${posterIMG}"
+                data-backdrop=${IMG_URL + backdrop}
+                alt=${title}>
+            <h4 class="tv-card__head">${title}</h4>
         </a>
         `
         tvShowList.append(card);
